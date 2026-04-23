@@ -3060,20 +3060,9 @@ function App() {
   // Scroll-snap-aware programmatic scroller
   // (mandatory snap resists arbitrary scrollTo — temporarily override with !important)
   const scrollToEl = (el, smooth) => {
-    const screen = screenRef.current;
-    if (!screen || !el) return;
-    screen.style.setProperty('scroll-snap-type', 'none', 'important');
-    // also neutralize per-page snap-stop so it doesn't fight us
-    document.querySelectorAll('.page').forEach(p => {
-      p.style.setProperty('scroll-snap-stop', 'normal', 'important');
-    });
-    screen.scrollTo({ top: el.offsetTop, behavior: smooth ? 'smooth' : 'auto' });
-    setTimeout(() => {
-      screen.style.removeProperty('scroll-snap-type');
-      document.querySelectorAll('.page').forEach(p => {
-        p.style.removeProperty('scroll-snap-stop');
-      });
-    }, smooth ? 800 : 60);
+    if (!el) return;
+    const top = el.getBoundingClientRect().top + window.scrollY;
+    window.scrollTo({ top, behavior: smooth ? 'smooth' : 'auto' });
   };
 
   const handleAdvance = () => scrollToEl(page2Ref.current, true);
@@ -3082,7 +3071,7 @@ function App() {
     setGameInitial({});
     setView('game');
     requestAnimationFrame(() => {
-      screenRef.current?.scrollTo({ top: 0, behavior: 'auto' });
+      window.scrollTo({ top: 0, behavior: 'auto' });
     });
   };
 
@@ -3128,7 +3117,7 @@ function App() {
     } catch (e) { /* network offline — localStorage backup still has it */ }
 
     requestAnimationFrame(() => {
-      screenRef.current?.scrollTo({ top: 0, behavior: 'auto' });
+      window.scrollTo({ top: 0, behavior: 'auto' });
     });
   };
 
@@ -3137,7 +3126,7 @@ function App() {
     setGameInitial({ name: submission.name });
     setView('game');
     requestAnimationFrame(() => {
-      screenRef.current?.scrollTo({ top: 0, behavior: 'auto' });
+      window.scrollTo({ top: 0, behavior: 'auto' });
     });
   };
 
@@ -3161,14 +3150,14 @@ function App() {
     setAllSubmissions([]);
     setGameInitial({});
     requestAnimationFrame(() => {
-      screenRef.current?.scrollTo({ top: 0, behavior: 'auto' });
+      window.scrollTo({ top: 0, behavior: 'auto' });
     });
   };
 
   return (
     <>
       <div className="site-wrap">
-        <div className="site-screen" ref={screenRef}>
+        <div className="site-screen">
           {view === 'invite' && (
             <>
               <Landing onAdvance={handleAdvance} muted={muted} toggleMute={() => setMuted(!muted)}/>
