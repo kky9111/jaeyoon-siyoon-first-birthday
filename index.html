@@ -973,17 +973,7 @@ html, body {
 
 /* ───── page shell ───── */
 .stage {
-  min-height: 100vh;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  padding: 40px 24px;
-  background:
-    radial-gradient(circle at 15% 20%, color-mix(in oklab, var(--turquoise) 35%, transparent) 0%, transparent 50%),
-    radial-gradient(circle at 85% 80%, color-mix(in oklab, var(--apricot) 40%, transparent) 0%, transparent 50%),
-    var(--cream-warm);
-  position: relative;
-  overflow: hidden;
+  display: none;
 }
 
 .stage::before, .stage::after {
@@ -1003,24 +993,25 @@ html, body {
   background: var(--apricot);
 }
 
-.phone-wrap { position: relative; z-index: 2; }
+.phone-wrap { display: none; }
 
 /* ───── scroll container inside phone ───── */
 .screen {
-  height: 100%;
-  overflow-y: scroll;
-  scroll-behavior: smooth;
-  scroll-snap-type: y mandatory;
-  -webkit-overflow-scrolling: touch;
-  scrollbar-width: none;
-  background: var(--cream);
+  display: none;
 }
-.screen::-webkit-scrollbar { display: none; }
+.site-wrap {
+  min-height: 100vh;
+  background: var(--cream-warm);
+}
+.site-screen {
+  max-width: 680px;
+  margin: 0 auto;
+  background: var(--cream);
+  min-height: 100vh;
+}
 
 .page {
-  min-height: 100%;
-  scroll-snap-align: start;
-  scroll-snap-stop: always;
+  min-height: 100vh;
   position: relative;
   font-family: var(--font-body);
 }
@@ -3166,53 +3157,32 @@ function App() {
 
   return (
     <>
-      <div className="stage">
-        <div className="phone-wrap">
-          <IOSDevice width={402} height={844}>
-            {/* KakaoTalk-like browser chrome */}
-            <div style={{paddingTop: 54}}>
-              <div className="kakao-chrome">
-                <svg width="16" height="16" viewBox="0 0 20 20" style={{flex: '0 0 auto'}}>
-                  <path d="M5 4 L3 6 L10 13 L17 6 L15 4 L10 9 Z" fill="#12263A" opacity="0.6"/>
-                </svg>
-                <div style={{flex: 1, textAlign: 'center', fontWeight: 700, fontSize: 13}}>
-                  🎂 재윤 &amp; 시윤 첫 돌잔치
-                </div>
-                <svg width="16" height="16" viewBox="0 0 20 20" style={{flex: '0 0 auto'}}>
-                  <circle cx="4"  cy="10" r="1.5" fill="#12263A" opacity="0.6"/>
-                  <circle cx="10" cy="10" r="1.5" fill="#12263A" opacity="0.6"/>
-                  <circle cx="16" cy="10" r="1.5" fill="#12263A" opacity="0.6"/>
-                </svg>
+      <div className="site-wrap">
+        <div className="site-screen" ref={screenRef}>
+          {view === 'invite' && (
+            <>
+              <Landing onAdvance={handleAdvance} muted={muted} toggleMute={() => setMuted(!muted)}/>
+              <div ref={page2Ref}>
+                <Page2 onPlayGame={handlePlayGame}/>
               </div>
-
-              <div className="screen" ref={screenRef} style={{height: 'calc(844px - 54px - 28px)'}}>
-                {view === 'invite' && (
-                  <>
-                    <Landing onAdvance={handleAdvance} muted={muted} toggleMute={() => setMuted(!muted)}/>
-                    <div ref={page2Ref}>
-                      <Page2 onPlayGame={handlePlayGame}/>
-                    </div>
-                  </>
-                )}
-                {view === 'game' && (
-                  <Game
-                    onSubmit={handleSubmit}
-                    onBack={handleBack}
-                    initial={gameInitial}
-                    lockedBabies={allSubmissions.map(s => s.baby)}
-                  />
-                )}
-                {view === 'success' && submission && (
-                  <Success
-                    submission={submission}
-                    allSubmissions={allSubmissions}
-                    onReset={handleReset}
-                    onPredictOther={handlePredictOther}
-                  />
-                )}
-              </div>
-            </div>
-          </IOSDevice>
+            </>
+          )}
+          {view === 'game' && (
+            <Game
+              onSubmit={handleSubmit}
+              onBack={handleBack}
+              initial={gameInitial}
+              lockedBabies={allSubmissions.map(s => s.baby)}
+            />
+          )}
+          {view === 'success' && submission && (
+            <Success
+              submission={submission}
+              allSubmissions={allSubmissions}
+              onReset={handleReset}
+              onPredictOther={handlePredictOther}
+            />
+          )}
         </div>
       </div>
 
