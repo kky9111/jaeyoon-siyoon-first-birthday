@@ -1953,7 +1953,13 @@ html, body {
 
 
 
+
+
+
+
+
 <script type="text/babel">
+
 
 // iOS.jsx — Simplified iOS 26 (Liquid Glass) device frame
 // Based on the iOS 26 UI Kit + Figma status bar spec. No assets, no deps.
@@ -2293,8 +2299,9 @@ Object.assign(window, {
   IOSDevice, IOSStatusBar, IOSNavBar, IOSGlassPill, IOSList, IOSListRow, IOSKeyboard,
 });
 
-</script>
-<script type="text/babel">
+
+
+
 // Page 1 — Landing
 
 function TwinsSticker({ onTap }) {
@@ -2394,8 +2401,9 @@ function Landing({ onAdvance, muted, toggleMute }) {
 
 window.Landing = Landing;
 
-</script>
-<script type="text/babel">
+
+
+
 // Page 2 — Album + details + QR
 
 const PHOTOS = [
@@ -2658,8 +2666,9 @@ function Page2({ onPlayGame }) {
 
 window.Page2 = Page2;
 
-</script>
-<script type="text/babel">
+
+
+
 // Page 3 — 돌잡이 game
 
 const DOLZABI_ITEMS = [
@@ -2960,8 +2969,9 @@ function Success({ submission, allSubmissions, onReset, onPredictOther }) {
 window.Game = Game;
 window.Success = Success;
 
-</script>
-<script type="text/babel">
+
+
+
 
 function App() {
   const [view, setView] = React.useState('invite'); // 'invite' | 'game' | 'success'
@@ -3203,6 +3213,7 @@ function App() {
 }
 
 ReactDOM.createRoot(document.getElementById('root')).render(<App/>);
+
 
 </script>
 </body></html>
